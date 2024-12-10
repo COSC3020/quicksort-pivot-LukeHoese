@@ -16,7 +16,41 @@ equally likely, i.e. the input array is ordered randomly.
 Your answer must derive probabilities for choosing a good pivot and
 quantitatively reason with them.
 
-The intuitive answer I immediately came to is that yes, median of three is more likely to produce a good pivot than selecting the first element with no further information. It is pretty easy to understand this on a base level, as worst case scenario for quicksort is when the selected pivot is the highest or lowest available element. By starting off with two comparisons you guarantee that there is at least one element higher than your pivot and at least one element lower than your pivot, which eliminates both worst case scenarios. It's hard to come to a definitive probability value for the medium of three method, but given that selecting the first element has a 50% chance of falling in the range of "good" pivots, and median of three eliminates the chance of choosing the highest or lowest value, thus eliminating at least one element that can be chose from each partition of "bad" pivots, we can assume that the odds of getting a "good" pivot are greater than 50%. Evaluating this from the point of view of asymptotic complexity however leads us to the same calculations that were seen on the slides. The only guarantee of improved odds is a constant so when looking at larger data sets this is essentially ignored, leaving the number of expected splits to still be Θ(logn) and the number of total comparisons to still be Θ(nlogn), with the slide calculations still holding true.
+The intuitive answer I immediately came to is that yes, median of three is more likely to produce a good pivot than selecting the first element with no further information. It is pretty easy to understand this on a base level, as worst case scenario for quicksort is when the selected pivot is the highest or lowest available element. By starting off with two comparisons you guarantee that there is at least one element higher than your pivot and at least one element lower than your pivot, which eliminates both worst case scenarios. 
+
+Diving Deeper (With help from Daniel Collins and trusty Slide 34):
+
+First we will define the three types of numbers that can be chose for our median of 3.  
+Numbers too large: L (1/4 chance)  
+Numbers too small: S (1/4 chance)  
+And numbers that would be 'good' pivots (1/2 chance)
+
+Since we are picking 3 seperate numbers, each number can be any of the above types of numbers, meanign we have 3<sup>3</sup> or 27 unique combinations of numbers
+
+combinations of numbers that are permutations of each other are all equally likely so we will group them and multiply the probability by the amount of permutations
+
+to find the probability of each of these we will multiple out the odds of each of the individual elements of the combination (lowest common denominator will be 64 so I will convert all probabilities preemtively)
+
+SSS (1/4)<sup>3</sup> = 1/64  
+* MMM (1/2)<sup>3</sup> = 8/64  
+LLL (1/4)<sup>3</sup> = 1/64  
+SSM+ (1/4)<sup>2</sup> * (1/2) * 3 = 6/64  
+SSL+ (1/4)<sup>3</sup> * 3 = 3/64  
+* MMS+ (1/2)<sup>2</sup> * (1/4) * 3 = 12/64  
+* MML+ (1/2)<sup>2</sup> * (1/4) * 3 = 12/64  
+LLS+ (1/4)<sup>3</sup> * 3 = 3/64  
+LLM+ (1/4)<sup>2</sup> * (1/2) * 3 = 6/64  
+* SML+ (1/4)<sup>2</sup> * (1/2) * 6 = 12/64  
+
+Combination sets where a good pivot would be chosen as the median are starred
+
+adding up these probabilities gives us the odds of choosing a good pivot using median of 3
+
+8/64 + 12/64 + 12/64 + 12/64 = 44/64 = 68.75%
+
+Had help from Daniel Collins to stear me in the right direction (using combinations and probabilities of each element)
+
+I certify that I have listed all sources used to complete this exercise, including the use of any Large Language Models. All of the work is my own, except where stated otherwise. I am aware that plagiarism carries severe penalties and that if plagiarism is suspected, charges may be filed against me without prior notice.
 
 Add your answer to this markdown file. [This
 page](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions)
